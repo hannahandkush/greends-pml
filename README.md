@@ -45,12 +45,11 @@ We do an introduction to ML and compare it with *statistical modelling* using th
 <!---
 
 <details markdown="block">
-<summary> 2. Basic concepts (Feb 28, 2025): model, loss, fit, learning rate, perceptron, ... </summary>
+<summary> 2. Basic concepts (Feb 28, 2025): model, loss, fit, learning rate, iterations, epochs </summary>
 
-The goal of the following classes is to understand how ML models can be trained in and used to solve regression and classification problems. We start by applying the machine learning approach to well-known statistical problems like linear regression to illustrate the stepwise approach followed in ML. We use synthetic data generated from a linear or quadratic regression, where one can control the underlying model and the amout of noise. Then, we consider the  `Iris` tabular data set with 4 explanatory variables and categorical label that can be one of three species.
+The goal of the following classes is to understand how ML models can be trained in and used to solve regression and classification problems. We start by applying the machine learning approach to well-known statistical models like linear regression to illustrate the stepwise approach followed in ML. We extend the approach to binary classification problems. 
 
 - See (Raschka et al, 2022), Chapter 2: Training Simple Machine Learning Algorithms for Classification
-- Video on the Perceptron and early times of AI [The First Neural Networks](https://www.youtube.com/watch?v=e5dVSygXbAE&t=88s)
 - Basic concepts in Machine learning: *model*, *fit*, *epochs*, *loss*, *learning rate*, *perceptron*, parameters *weights*, for a simple regression problem. See [Basic concepts notes](https://github.com/isa-ulisboa/greends-pml/blob/main/docs/T1_basic_concepts.md).
 - Exercise: pseudo-code to train a simple Linear Regression model. See [Basic concepts notes](https://github.com/isa-ulisboa/greends-pml/blob/main/docs/T1_basic_concepts.md). 
 </details>
@@ -58,6 +57,8 @@ The goal of the following classes is to understand how ML models can be trained 
 <details markdown="block">
 <summary> Backpropagation (Mar 7, 2025): SGD, forward pass, backward pass, PyTorch, optimizer, ... </summary>
 
+
+- Video on the Perceptron and early times of AI [The First Neural Networks](https://www.youtube.com/watch?v=e5dVSygXbAE&t=88s)
 - See (Raschka et al, 2022), Chapter 2: Training Simple Machine Learning Algorithms for Classification
 - See [Basic concepts notes](https://github.com/isa-ulisboa/greends-pml/blob/main/docs/T1_basic_concepts.md). 
 - Revise solutions for the problems listed in the previous class.
