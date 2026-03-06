@@ -44,45 +44,31 @@ We do an introduction to ML and compare it with *statistical modelling* using th
 
 
 <details markdown="block">
-<summary> 2. Basic concepts (Feb 28, 2025): model, loss, fit, learning rate, iterations, epochs </summary>
+<summary> 2. Basic concepts (Feb 27, 2026): model, loss, fit, learning rate, iterations, epochs </summary>
 
 The goal of the following classes is to understand how ML models can be trained in and used to solve regression and classification problems. We start by applying the machine learning approach to well-known statistical models like linear regression to illustrate the stepwise approach followed in ML. We extend the approach to binary classification problems. 
 
+- Presentation of the 1st assignment on Moodle (due date: March 11, 2026)
 - See (Raschka et al, 2022), Chapter 2: Training Simple Machine Learning Algorithms for Classification
 - Check the [introductory video on LR](https://www.youtube.com/watch?v=3dhcmeOTZ_Q) using ML approach.
-- Basic concepts in Machine learning: *model*, *fit*, *epochs*, *loss*, *learning rate*, *weights*, for a simple regression problem. See [Basic concepts notes](https://github.com/isa-ulisboa/greends-pml/blob/main/docs/T1_basic_concepts.md).
-- Exercise: pseudo-code to train a simple Linear Regression model. See [exercise](https://github.com/isa-ulisboa/greends-pml/blob/main/docs/T1_linear_regression_exercise_with_pseudo_code.md). 
-- Extend the optimization approach to a binary classification problem. See [Basic concepts notes](https://github.com/isa-ulisboa/greends-pml/blob/main/docs/T1_basic_concepts.md).
+- Basic concepts in Machine learning: *model*, *fit*, *epochs*, *loss*, *learning rate*, *weights*, for a simple regression problem. See [Basic concepts notes](docs/T1_basic_concepts.md).
+- Exercise: define a Linear Regression class to with methods `.fit`and `.predict` and visualize the iterative process to find the optimal weights. See [exercise](docs/T1_Create_LInearRegression_class_fit_predict_visualize.md).
+- [Exercise](docs/T1_linear_regression_exercise_with_pseudo_code.md): consider the pseudo-code for the previous exercise, and relate it to concepts *loss function* and *stochastic gradient descent*.
+- Extend the optimization approach to a binary classification problem. See [Basic concepts notes](docs/T1_basic_concepts.md).
 </details>
 
+<details markdown="block">
+<summary> 3. Basic concepts (Mar 6, 2026): Classification, logistic regression, entropy and cross-entropy, regularization, batch size</summary>
+
+- See (Raschka et al, 2022), Chapter 3, pp 59-76
+- See [Basic concepts notes](docs/T2_basic_concepts_classification.md).
+- Check this very basic description of [Logistic Regression](https://www.youtube.com/watch?v=OlKL5nzm-1w)
+- Entropy, cross-entropy and KL Divergence: check video on [KL divergence 0-4'20](https://www.youtube.com/watch?v=tXE23653JrU) and [A Short Introduction to Entropy, Cross-Entropy and KL-Divergence, with application to ML](https://www.youtube.com/watch?v=ErfnhcEV1O8)
+- Exercise (part 1): Download the data set [Breast Cancer Wisconsin data set](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data). Read and explore data, split in train and test, standardize data, build from scratch a `LogisticRegression class`, use training data to fit the model, evaluate the accuracy with test data. Finally, plot the fitted regression with the linear combination of predictors on the *x* axis, and the probabilities on the *y* axis; the plot should depict the malignant cases and the benign cases in different colors  
+- Exercise (part 2): adapt the `LogisticRegression` class so you can process training data in batches;
+- Exercise (part 3): adapt it further to include a regularization term in the loss function.
 
 <!---
-
-<details markdown="block">
-<summary> Backpropagation (Mar 7, 2025): SGD, forward pass, backward pass, PyTorch, optimizer, ... </summary>
-
-
-- Video on the Perceptron and early times of AI [The First Neural Networks](https://www.youtube.com/watch?v=e5dVSygXbAE&t=88s)
-- See (Raschka et al, 2022), Chapter 2: Training Simple Machine Learning Algorithms for Classification
-- See [Basic concepts notes](https://github.com/isa-ulisboa/greends-pml/blob/main/docs/T1_basic_concepts.md). 
-- Revise solutions for the problems listed in the previous class.
-- Backpropagation and computation graph
-- `PyTorch` pipeline: loss, optimizer
-- The following table illustrates the changes from a basic Python script which is dependent on the model, loss, etc,  to a PyTorch higher-level script that can easily generalized to other models, loss functions or optimizer strategies.
-
-| Basic Python | PyTorch 
-|---|---
-| Define model explicitly | Use a pre-defined model
-|`def predict(x):`|`torch.nn.Linear(in_size,out_size)`
-| Define loss explicitly | Use a pre-defined loss function
-|`def loss(y,y_pred):`|`loss=torch.nn.MSEloss(y,y_pred)`
-| Loss optimization strategy | Use a pre-defined optimizer
-| Code explicitly| `optimizer=torch.optim.SGD(params, learn_rate)`
-| Compute *ad hoc* gradient | **Use built-in backpropagation mechanism**
-|`def gradient(x,y,y_pred):`|`loss.backward()`
-|Update weights explicitly| `optimizer.step()`
-
-- Description of assignment #1
 
 </details>
 
@@ -174,6 +160,34 @@ The goal of the following classes is to understand how ML models can be trained 
 - Pipeline that includes feature selection, followed by hyperparameter search: https://github.com/isa-ulisboa/greends-pml/blob/main/notebooks/wine_region_pipeline_XGB_CV_gridsearch_featselection.ipynb
 
 </details>
+
+
+<details markdown="block">
+<summary> Backpropagation (Mar 7, 2025): SGD, forward pass, backward pass, PyTorch, optimizer, ... </summary>
+
+
+- Video on the Perceptron and early times of AI [The First Neural Networks](https://www.youtube.com/watch?v=e5dVSygXbAE&t=88s)
+- See (Raschka et al, 2022), Chapter 2: Training Simple Machine Learning Algorithms for Classification
+- See [Basic concepts notes](https://github.com/isa-ulisboa/greends-pml/blob/main/docs/T1_basic_concepts.md). 
+- Revise solutions for the problems listed in the previous class.
+- Backpropagation and computation graph
+- `PyTorch` pipeline: loss, optimizer
+- The following table illustrates the changes from a basic Python script which is dependent on the model, loss, etc,  to a PyTorch higher-level script that can easily generalized to other models, loss functions or optimizer strategies.
+
+| Basic Python | PyTorch 
+|---|---
+| Define model explicitly | Use a pre-defined model
+|`def predict(x):`|`torch.nn.Linear(in_size,out_size)`
+| Define loss explicitly | Use a pre-defined loss function
+|`def loss(y,y_pred):`|`loss=torch.nn.MSEloss(y,y_pred)`
+| Loss optimization strategy | Use a pre-defined optimizer
+| Code explicitly| `optimizer=torch.optim.SGD(params, learn_rate)`
+| Compute *ad hoc* gradient | **Use built-in backpropagation mechanism**
+|`def gradient(x,y,y_pred):`|`loss.backward()`
+|Update weights explicitly| `optimizer.step()`
+
+</details>
+
 
 <details markdown="block">
 <summary> Data pipeline for deep learning  (May 9, 2025):  PyTorch, datasets, dataloaders</summary>
