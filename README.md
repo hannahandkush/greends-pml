@@ -19,8 +19,10 @@ Links for class resources:
 # Sessions
 Each description below includes the summary of the topics covered in the session, as well as the description of assignments and links to videos or other materials that students should work through.
 
+---
+
 <details markdown="block">
-<summary> 1. Introduction (Feb 20, 2026) </summary>
+<summary><a name="T0"></a> 0. Introduction (Feb 20, 2026) </summary>
 
 We do an introduction to ML and compare it with *statistical modelling* using the simplest possible model, *linear regression*. We survey some of the problems that can be addressed with the techniques and tools that will be discussed during the semester. The examples will be run on Colab.
 
@@ -42,9 +44,10 @@ We do an introduction to ML and compare it with *statistical modelling* using th
 <!--- An example of a prediction task for time series: check the notebook [modeling ground water levels](https://www.kaggle.com/code/andreshg/timeseries-analysis-a-complete-guide/) for the Kaggle competition [Acea Smart Water Analytics](https://www.kaggle.com/competitions/acea-water-prediction/). Try to download the data and run the notebook to reproduce the results. --->
 </details>
 
+---
 
-<details markdown="block">
-<summary> 2. Basic concepts (Feb 27, 2026): model, loss, fit, learning rate, iterations, epochs </summary>
+<details id= markdown="block">
+<summary><a name="T1"></a> 1. Basic concepts (Feb 27, 2026): model, loss, fit, learning rate, iterations, epochs </summary>
 
 The goal of the following classes is to understand how ML models can be trained in and used to solve regression and classification problems. We start by applying the machine learning approach to well-known statistical models like linear regression to illustrate the stepwise approach followed in ML. We extend the approach to binary classification problems. 
 
@@ -57,8 +60,10 @@ The goal of the following classes is to understand how ML models can be trained 
 - Extend the optimization approach to a binary classification problem. See [Basic concepts notes](docs/T1_basic_concepts.md).
 </details>
 
+---
+
 <details markdown="block">
-<summary> 3. Basic concepts (Mar 6, 2026): Classification, logistic regression, entropy and cross-entropy, regularization, batch size</summary>
+<summary><a name="T2"></a> 2. Basic concepts (Mar 6, 2026): Classification, logistic regression, entropy and cross-entropy, regularization, batch size</summary>
 
 - See (Raschka et al, 2022), Chapter 3, pp 59-76
 - See [Basic concepts notes](docs/T2_basic_concepts_classification.md).
@@ -68,40 +73,115 @@ The goal of the following classes is to understand how ML models can be trained 
 - Exercise (part 2): adapt the `LogisticRegression` class so you can process training data in batches;
 - Exercise (part 3): adapt it further to include a regularization term in the loss function.
 
-<!---
-
-</details>
-
-<details markdown="block">
-<summary> Decision trees (Mar 14, 2025): entropy, over-fitting, train and development </summary>
-
-- See (Raschka et al, 2022), Chapter 3: Decision tree learning (pg 86-98)
-- See [Decision tree notes](https://github.com/isa-ulisboa/greends-pml/blob/main/docs/T2_decision_trees_overfitting_train_test.md)
-- How to grow a decision tree
-- What is entropy and how does it help us to find the best model? Check  the Princeton video on [Information Theory Basics](https://www.youtube.com/watch?v=bkLHszLlH34).
-- The risk of over-fitting: train and development sets
-- Decision tree hyper-parameters
-- Exercise: create a decision tree for the [Soil detection for cotton crop problem](https://www.kaggle.com/datasets/zohasohail/soil-detection-for-cotton-crop) and determine the best values for hyper-parameters Maximum depth and Minimum leaf size.
-- Comparing  last session (perceptron) with this session (decision tree):
-
-| Class | Mar 7 | Mar 14
-|--- |--- |---
-| Model | Perceptron | Decision tree
-| Problem | regression | classification
-| Data set | train only | train and development
-| Hyper-parameters | learning rate, number iterations | tree depth, leaf size, ...
-| Risk of over-fitting | very low | very high
-| Loss function | $MSE=\frac{1}{n}\sum_{i=1}^n \left(y_i-\hat{y}_i\right)^2$ | entropy:  $H({\rm \bf p})=-\sum_{i=1}^n \hat{p}_i \log_2 \hat{p}_i$
-| Optimization | backpropagation (SGD) | brute force (try all features and all thresholds)
-| Python package | PyTorch | scikit learn
-
+  <details markdown="block">
+  <summary>Suggestion for the script (to be completed)</summary>
+    
+    ```python
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    from sklearn.model_selection import train_test_split
+    from sklearn.preprocessing import StandardScaler
+    # from your_module import LogisticRegression  <-- to be implemented
+    
+    def main():
+        # 1. Load and Clean Data
+        df = pd.read_csv('data.csv')
+        # Drop unnecessary columns and encode target (M=1, B=0)
+        df = df.drop(['id', 'Unnamed: 32'], axis=1)
+        df['diagnosis'] = df['diagnosis'].map({'M': 1, 'B': 0})
+        
+        X = df.drop('diagnosis', axis=1).values
+        y = df['diagnosis'].values
+    
+        # 2. Split and Standardize
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42
+        )
+        
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_test_scaled = scaler.transform(X_test)
+    
+        # 3. Build and Fit Model (Exercises 1, 2, & 3)
+        model = LogisticRegression(
+            learning_rate=0.01, 
+            epochs=1000, 
+            batch_size=32,      # Part 2
+            lambda_reg=0.1      # Part 3
+        )
+        model.fit(X_train_scaled, y_train)
+    
+        # 4. Evaluation
+        predictions = model.predict(X_test_scaled)
+        accuracy = (predictions == y_test).mean()
+        print(f"Model Accuracy: {accuracy * 100:.2%}")
+    
+        # 5. Visualization
+        # Calculate linear combination (z = Xw + b) and probabilities
+        z = X_test_scaled @ model.weights + model.bias
+        probs = model.predict_proba(X_test_scaled)
+    
+        plt.figure(figsize=(10, 6))
+        plt.scatter(z[y_test == 1], probs[y_test == 1], color='red', label='Malignant', alpha=0.5)
+        plt.scatter(z[y_test == 0], probs[y_test == 0], color='blue', label='Benign', alpha=0.5)
+        
+        # Plot the sigmoid curve
+        plt.title("Logistic Regression: Linear Combination vs Probability")
+        plt.xlabel("Linear Combination (z)")
+        plt.ylabel("Probability")
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+    
+    if __name__ == "__main__":
+        main()
+      
+    ```
+  </details>
   
 </details>
 
+---
+
 <details markdown="block">
-<summary> Data preprocessing (Mar 21, 2025): pipelines, missing data, categorical features, scaling, train and test </summary>
+<summary> 3. Decision trees (Mar 13, 2026): decision trees for classification, information gain, over-fitting, train and development sets </summary>
+
+- Review structured code for the exercise of the previous class on [Breast Cancer Wisconsin data set](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data).
+    - Pipeline: train/test + pre-processing (scale features) + define model + fit Model + use model to predict;
+    - Other concepts: logistic regression; batch size, regularization parameter.
+- Discussion of [Assignment #1](notebooks/assign_1_wine_quality.ipynb). Keywords: input, output, model, loss function, epoch, batch, predict, train dataset, and (independent) test dataset.
+- See (Raschka et al, 2022), Chapter 3: Decision tree learning (pg 86-98)
+- See [Decision tree notes](https://github.com/isa-ulisboa/greends-pml/blob/main/docs/T2_decision_trees_overfitting_train_test.md)
+- Check this video for an easy introduction to decision trees using `sklearn.tree.DecisionTreeClassifier`: [Pokemon classifier](https://www.youtube.com/watch?v=LLBGiAAZqAM)
+- The risk of over-fitting: train and development (validation) data sets
+- Decision tree hyper-parameters, e.g. `max_depth`
+- Exercise: create a decision tree classifier for the [Soil detection for cotton crop problem](https://www.kaggle.com/datasets/zohasohail/soil-detection-for-cotton-crop). Use as predictors `['ph', 'Temperature', 'Humidity', 'Density', 'Electrical Conductivity', 'N', 'P', 'K']` and as response `'Cotton Crop'`. Determine the best values for hyper-parameters Maximum depth and Minimum leaf size using a development (validation) set. Visualize the model with `plot_tree`. See [possible structure for the code](notebooks/T3_cotton_crop_problem_grid_search.ipynb). Note that `sklearn.tree.DecisionTreeClassifier` can only be applied to numerical features. If categorical features are available, they must be converted to numerical (typically using a one-hot encoder).
+- Comparision of logistic regression with decision trees for classification:
+
+| Model | Logistic Regression | Decision tree |
+| --- | --- | ---|
+| Problem | Classification | Classification |
+| Hyper-parameters | learning rate, number iterations, ... | tree depth, leaf size, ... |
+| Risk of over-fitting | low | high |
+| Loss function | cross entropy: $-\log\_2\hat{p}\_i$, $i$ is the actual label | Gini, or entropy:  $-\sum_{i=1}^n\hat{p}\_i\log\_2\hat{p}\_i$ |
+| Optimization | Gradient descent | Brute force (try all features and all thresholds) |
+  
+</details>
+
+---
+
+
+<details markdown="block">
+<summary> Data preprocessing (Mar 20, 2026): pipelines, missing data, categorical features, scaling</summary>
 
 - See (Raschka et al, 2022), Chapter 4 (Data Preprocessing) and Chapter 6 (Streamlining workflows with pipelines)
+
+</details>
+
+<!---
+
+
+
 - Supervised learning flowchart
   <details markdown="block">
   <summary>Figure 1.9 (Raschka et al, 2022) </summary>
